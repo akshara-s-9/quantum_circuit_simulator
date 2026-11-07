@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 #import streamlit as st
 
 #represent a single qubit
-qubit=np.array([1+0j, 0+1j], dtype=complex)
+qubit=np.array([1/np.sqrt(2)+0j, 1j/np.sqrt(2)], dtype=complex)
 print(qubit)
 
 if abs(qubit[0])**2 + abs(qubit[1])**2 == 1:
@@ -25,4 +25,18 @@ def pauli_z(qubit):
           [0, -1]]
     return gate@qubit
 
-print(pauli_x(qubit))
+def hadamard(qubit):
+    gate=[[1/np.sqrt(2), 1/np.sqrt(2)],
+          [1/np.sqrt(2), -1/np.sqrt(2)]]
+    return gate@qubit
+
+def plot_probabilities(qubit):
+    probs = np.abs(qubit) ** 2
+    labels = [f"|{i}>" for i in range(len(qubit))]
+    plt.bar(labels, probs)
+    plt.ylim(0, 1)
+    plt.ylabel("Probability")
+    plt.title("Measurement probabilities")
+    plt.show()
+
+plot_probabilities(qubit)
