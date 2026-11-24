@@ -3,10 +3,14 @@ import matplotlib.pyplot as plt
 #import streamlit as st
 
 #represent a single qubit
-qubit=np.array([1+0j, 0+0j], dtype=complex)
+
+qubit_input = input("Enter the qubit state, e.g. [1/np.sqrt(2)+0j, 1/np.sqrt(2)+0j]: ")
+# evaluate the text as a Python expression, only allowing numpy (np) to be used
+qubit = np.array(eval(qubit_input, {"__builtins__": {}, "np": np}), dtype=complex)
 print(qubit)
 
-if abs(qubit[0])**2 + abs(qubit[1])**2 == 1:
+# use isclose because floating point maths isn't exact (e.g. 0.5000000000000001)
+if np.isclose(abs(qubit[0])**2 + abs(qubit[1])**2, 1):
     print("The qubit is valid.")
 
 #qubit gates
@@ -30,10 +34,17 @@ def hadamard(qubit):
           [1/np.sqrt(2), -1/np.sqrt(2)]]
     return gate@qubit
 
+#probabilities and measurement
 def get_probabilities(qubit):
     probs = np.abs(qubit) ** 2
     return probs
 
+def measure(qubit):
+    probs = get_probabilities(qubit)
+    result = np.random.choice([0, 1], p=probs)
+    return result
+
+#visualization
 def plot_probabilities(qubit):
     probs = get_probabilities(qubit)    
     labels = [f"|{i}>" for i in range(len(qubit))]
@@ -84,5 +95,6 @@ def plot_bloch_sphere(qubit):
     ax.set_box_aspect([1, 1, 1])
     plt.show()
 
-plot_bloch_sphere(qubit)
+measurement_result = measure(qubit)
+print(f"Measurement result: |{measurement_result}>")
 
