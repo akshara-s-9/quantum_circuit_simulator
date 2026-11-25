@@ -44,6 +44,10 @@ def measure(qubit):
     result = np.random.choice([0, 1], p=probs)
     return result
 
+#multiple qubits
+def tensor_product(qubit1, qubit2):
+    return np.kron(qubit1, qubit2)
+
 #visualization
 def plot_probabilities(qubit):
     probs = get_probabilities(qubit)    
@@ -95,6 +99,5 @@ def plot_bloch_sphere(qubit):
     ax.set_box_aspect([1, 1, 1])
     plt.show()
 
-measurement_result = measure(qubit)
-print(f"Measurement result: |{measurement_result}>")
+print(tensor_product(qubit, qubit))
 
